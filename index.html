@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100b1b">
+<title>PhonePe | People dashboard</title>
+<style>
+:root{color-scheme:dark;--bg:#100b1b;--panel:#191326;--panel2:#211a30;--line:#342a45;--text:#fffaff;--muted:#a89bb8;--pink:#ff4e9b;--violet:#a77bff;--mint:#66e6ca;--amber:#ffc779}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 86% -10%,#492052 0,transparent 36%),radial-gradient(ellipse at 0 42%,#281638 0,transparent 38%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input,select{font:inherit}
+.shell{width:min(1440px,100%);margin:auto;padding:28px 34px 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em}
+.brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#8d42df,#ec408a);box-shadow:0 7px 24px #a336a64d;font-size:23px}
+.brand small{display:block;color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.17em}
+.top-right{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:28px}
+.eyebrow{display:flex;align-items:center;gap:8px;color:#e5a5ff;text-transform:uppercase;letter-spacing:.17em;font-size:10px;font-weight:800}
+h1{font-size:clamp(34px,5vw,62px);letter-spacing:-.055em;line-height:1.04;margin:12px 0 10px;font-weight:750}
+.gradient{background:linear-gradient(100deg,#fff 2%,#ffc3e2 48%,#be9aff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro{max-width:620px;color:var(--muted);font-size:14px;margin:0}
+.hero-note{max-width:245px;border:1px solid #ffffff17;background:#ffffff08;padding:13px 15px;border-radius:14px;color:#c9bbd7;font-size:11px}
+.hero-note strong{display:block;color:#fff;font-size:12px;margin-bottom:3px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;margin-bottom:14px;background:#1a1424cc;border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(16px)}
+.filters{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.filter{display:flex;align-items:center;gap:8px;background:#ffffff08;border:1px solid #ffffff15;border-radius:10px;padding:0 10px;height:36px;color:var(--muted)}
+.filter select,.filter input{background:transparent;color:var(--text);border:0;outline:0;min-width:80px}
+.filter select option{background:#211a30;color:white}
+.filter input{width:175px}
+.filter .icon{color:#c6a9dc}
+.tool-actions{display:flex;gap:8px}
+.btn{border:1px solid #ffffff1b;background:#ffffff09;color:#f5eafa;border-radius:10px;padding:8px 12px;cursor:pointer;font-size:11px;font-weight:700;transition:.18s}
+.btn:hover{border-color:#e879c9;background:#ffffff12;transform:translateY(-1px)}
+.btn.primary{border:0;background:linear-gradient(105deg,#9847dc,#e74691);box-shadow:0 5px 17px #c34ca838}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:0 0 14px}
+.kpi{position:relative;overflow:hidden;background:linear-gradient(145deg,#211a30,#191326);border:1px solid var(--line);border-radius:17px;padding:19px 20px;min-height:126px}
+.kpi:after{content:"";position:absolute;width:110px;height:110px;right:-42px;top:-53px;border-radius:50%;background:var(--glow);filter:blur(2px);opacity:.21}
+.kpi-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-weight:750}
+.kpi-icon{display:grid;place-items:center;width:29px;height:29px;border:1px solid #ffffff12;background:#ffffff09;border-radius:9px;font-size:14px}
+.kpi-value{font-size:clamp(25px,3vw,34px);line-height:1.15;font-weight:760;letter-spacing:-.04em;margin-top:12px}
+.kpi-foot{font-size:10px;color:#8f829e;margin-top:5px}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(290px,.85fr);gap:14px;margin-bottom:14px}
+.card{background:linear-gradient(145deg,#1d1729f5,#171221f5);border:1px solid var(--line);border-radius:18px;padding:19px;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+.card-title{font-size:14px;font-weight:750;letter-spacing:-.01em}
+.card-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.tag{font-size:9px;border:1px solid #ffffff15;color:#d5c7e0;border-radius:20px;padding:5px 8px;white-space:nowrap}
+.chart-wrap{height:250px;position:relative}
+canvas{display:block;width:100%;height:100%}
+.age-layout{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:8px;min-height:220px}
+.donut-wrap{position:relative;height:188px}
+.donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.donut-center strong{font-size:24px;letter-spacing:-.04em}
+.donut-center span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+.legend{display:grid;gap:10px}
+.legend-row{display:grid;grid-template-columns:9px 1fr auto;align-items:center;gap:8px;font-size:10px;color:#d3c8dc}
+.legend-dot{width:8px;height:8px;border-radius:3px}
+.legend-row b{font-size:10px;color:#fff}
+.insight-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.insight{display:flex;gap:11px;align-items:flex-start;background:#ffffff06;border:1px solid #ffffff11;border-radius:14px;padding:13px}
+.insight-icon{display:grid;place-items:center;flex:0 0 29px;height:29px;border-radius:9px;background:#a750b523;color:#f6a4d5}
+.insight strong{display:block;font-size:11px;margin:1px 0 3px}
+.insight span{color:var(--muted);font-size:10px}
+.table-card{padding:0;overflow:hidden}
+.table-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:17px 19px;border-bottom:1px solid var(--line)}
+.table-scroll{overflow:auto;max-height:360px}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{position:sticky;top:0;background:#1d1729;color:#988ba6;font-size:9px;text-transform:uppercase;letter-spacing:.12em;padding:11px 19px;z-index:1}
+td{padding:11px 19px;border-top:1px solid #ffffff0b;font-size:11px;color:#e5dfea}
+tbody tr:hover{background:#ffffff07}
+.user-cell{display:flex;align-items:center;gap:9px;font-weight:650}
+.avatar{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#673caf,#d9499a);font-size:10px;font-weight:800}
+.id{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#a89bb8;font-size:10px}
+.age-pill{display:inline-block;min-width:35px;text-align:center;padding:3px 7px;border-radius:20px;background:#ffffff0b;color:#e9d8fa}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.footer{display:flex;justify-content:space-between;gap:10px;padding:15px 3px 0;color:#786d83;font-size:9px}
+.tooltip{position:absolute;display:none;pointer-events:none;z-index:2;padding:7px 9px;border:1px solid #ffffff24;background:#100b1bf2;border-radius:8px;color:white;font-size:10px;box-shadow:0 6px 20px #0007}
+@media(max-width:850px){.shell{padding:22px 20px 30px}.hero{align-items:flex-start}.hero-note{display:none}.content-grid{grid-template-columns:1fr}.age-layout{grid-template-columns:minmax(150px,.8fr) 1fr;max-width:520px;margin:auto}.insight-row{grid-template-columns:1fr}.insight{padding:10px 12px}}
+@media(max-width:600px){.shell{padding:18px 14px 26px}.topbar{margin-bottom:31px}.top-right{font-size:10px}.hero{margin-bottom:21px}h1{font-size:39px}.intro{font-size:12px}.toolbar{padding:10px;align-items:stretch}.filters{display:grid;grid-template-columns:1fr 1fr;width:100%}.filter{width:100%;min-width:0;padding:0 8px;font-size:10px}.filter select{min-width:0;width:100%;font-size:11px}.filter input{min-width:0;width:100%;font-size:11px}.filter.search{grid-column:1/-1}.tool-actions{width:100%}.tool-actions .btn{flex:1}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.kpi{padding:14px;min-height:112px}.kpi-value{font-size:27px}.kpi-foot{font-size:9px}.card{padding:15px;border-radius:15px}.chart-wrap{height:220px}.age-layout{grid-template-columns:1fr 1fr}.donut-wrap{height:155px}.legend{gap:8px}.table-head{padding:14px}.table-scroll{max-height:310px}th,td{padding:10px 12px}.footer{flex-direction:column}.brand{font-size:13px}}
+@media(max-width:370px){.kpi{padding:12px}.kpi-value{font-size:24px}.card-title{font-size:13px}.age-layout{grid-template-columns:1fr}.donut-wrap{height:170px}.legend{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">पे</div><div>phonepe <small>PEOPLE INSIGHTS</small></div></div>
+    <div class="top-right"><span class="live-dot"></span><span>FINAL DATASET</span><span>·</span><span id="updated">Profile overview</span></div>
+  </header>
+  <section class="hero">
+    <div><div class="eyebrow"><span>✦</span> A closer look at the community</div><h1>Know your <span class="gradient">people.</span></h1><p class="intro">A clean, human view of the PhonePe profile dataset — who joined, when they joined, and how the age mix comes together.</p></div>
+    <aside class="hero-note"><strong>Just the facts, beautifully.</strong>This dataset contains profile and join-date fields — no transaction or payment values.</aside>
+  </section>
+  <section class="toolbar" aria-label="Dashboard filters">
+    <div class="filters">
+      <label class="filter"><span class="icon">◷</span><select id="yearFilter" aria-label="Filter by join year"><option value="all">All join years</option></select></label>
+      <label class="filter"><span class="icon">♙</span><select id="ageFilter" aria-label="Filter by age group"><option value="all">All ages</option><option value="18-24">18–24</option><option value="25-34">25–34</option><option value="35-44">35–44</option><option value="45-54">45–54</option><option value="55+">55+</option></select></label>
+      <label class="filter search"><span class="icon">⌕</span><input id="search" type="search" placeholder="Search name or user ID" aria-label="Search users"></label>
+    </div>
+    <div class="tool-actions"><button class="btn" id="reset">Reset</button><button class="btn primary" id="export">↓ &nbsp;Export filtered CSV</button></div>
+  </section>
+  <section class="kpis" aria-label="Key metrics">
+    <article class="kpi" style="--glow:#b24bff"><div class="kpi-top">Profiles <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-foot" id="kpiTotalFoot">Matching current filters</div></article>
+    <article class="kpi" style="--glow:#ff4e9b"><div class="kpi-top">Average age <span class="kpi-icon">◉</span></div><div class="kpi-value" id="kpiAvg">—</div><div class="kpi-foot">Years across selected profiles</div></article>
+    <article class="kpi" style="--glow:#66e6ca"><div class="kpi-top">Median age <span class="kpi-icon">⌁</span></div><div class="kpi-value" id="kpiMedian">—</div><div class="kpi-foot">The middle of the age mix</div></article>
+    <article class="kpi" style="--glow:#ffc779"><div class="kpi-top">Latest join <span class="kpi-icon">✦</span></div><div class="kpi-value" id="kpiLatest">—</div><div class="kpi-foot" id="kpiLatestFoot">Most recent profile date</div></article>
+  </section>
+  <section class="content-grid">
+    <article class="card">
+      <div class="card-head"><div><div class="card-title">The community, over time</div><div class="card-sub">Profile join dates · monthly new profiles</div></div><span class="tag" id="dateRange">—</span></div>
+      <div class="chart-wrap"><canvas id="trendChart" aria-label="Monthly profile joins chart"></canvas><div class="tooltip" id="chartTooltip"></div></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div><div class="card-title">Age, at a glance</div><div class="card-sub">How the selected profiles are distributed</div></div><span class="tag">AGE MIX</span></div>
+      <div class="age-layout"><div class="donut-wrap"><canvas id="ageChart" aria-label="Age distribution chart"></canvas><div class="donut-center"><strong id="donutTotal">—</strong><span>profiles</span></div></div><div class="legend" id="ageLegend"></div></div>
+    </article>
+  </section>
+  <section class="insight-row" id="insights"></section>
+  <section class="card table-card">
+    <div class="table-head"><div><div class="card-title">Latest arrivals</div><div class="card-sub" id="tableSub">Most recently joined profiles in this view</div></div><span class="tag" id="tableCount">0 shown</span></div>
+    <div class="table-scroll"><table><thead><tr><th>Profile</th><th>User ID</th><th>Age</th><th>Join date</th></tr></thead><tbody id="userRows"></tbody></table><div class="empty" id="empty" hidden>No profiles match these filters.</div></div>
+  </section>
+  <footer class="footer"><span>Source: Phonepe-Final-Dataset-v2.xlsx · sample data</span><span>PhonePe Profile Insights &nbsp;·&nbsp; Built for a better view</span></footer>
+</main>
+<script>
+const ROWS = __PHONEPE_DATA__;
+const COLORS=["#f14d9c","#a67bff","#58d9c3","#ffc779","#7ca9ff"];
+const $=id=>document.getElementById(id);
+const fmt=new Intl.NumberFormat("en-IN");
+const fullDate=new Intl.DateTimeFormat("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+const monthFmt=new Intl.DateTimeFormat("en-IN",{month:"short",year:"2-digit"});
+let filtered=ROWS.slice(), chartPoints=[];
+const yearSet=[...new Set(ROWS.map(r=>r[3].slice(0,4)))].sort();
+yearSet.forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;$("yearFilter").append(o)});
+function bucket(age){return age<25?"18-24":age<35?"25-34":age<45?"35-44":age<55?"45-54":"55+"}
+function setCanvas(canvas){const rect=canvas.getBoundingClientRect(),ratio=window.devicePixelRatio||1;canvas.width=Math.max(1,Math.round(rect.width*ratio));canvas.height=Math.max(1,Math.round(rect.height*ratio));const c=canvas.getContext("2d");c.setTransform(ratio,0,0,ratio,0,0);return {c,w:rect.width,h:rect.height}}
+function drawTrend(rows){
+ const {c,w,h}=setCanvas($("trendChart"));c.clearRect(0,0,w,h);chartPoints=[];
+ if(!rows.length){$("dateRange").textContent="No dates";return}
+ const counts=new Map();rows.forEach(r=>{const k=r[3].slice(0,7);counts.set(k,(counts.get(k)||0)+1)});
+ const keys=[...counts.keys()].sort(),values=keys.map(k=>counts.get(k));chartPoints=values;
+ const pad={l:34,r:12,t:13,b:30},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,max=Math.max(1,...values),step=cw/Math.max(1,keys.length);
+ c.font="9px system-ui";c.textBaseline="middle";
+ for(let i=0;i<4;i++){const y=pad.t+ch*i/3,val=Math.round(max*(1-i/3));c.strokeStyle="#ffffff12";c.lineWidth=1;c.beginPath();c.moveTo(pad.l,y);c.lineTo(w-pad.r,y);c.stroke();c.fillStyle="#8f829e";c.textAlign="right";c.fillText(fmt.format(val),pad.l-7,y)}
+ const pts=values.map((v,i)=>({x:pad.l+step*i+step/2,y:pad.t+ch-(v/max)*ch,v,k:keys[i]}));
+ const grad=c.createLinearGradient(0,pad.t,0,h-pad.b);grad.addColorStop(0,"#df55b477");grad.addColorStop(1,"#df55b700");
+ c.beginPath();c.moveTo(pts[0].x,h-pad.b);pts.forEach(p=>c.lineTo(p.x,p.y));c.lineTo(pts[pts.length-1].x,h-pad.b);c.closePath();c.fillStyle=grad;c.fill();
+ c.beginPath();pts.forEach((p,i)=>{i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y)});c.strokeStyle="#f16db4";c.lineWidth=2.5;c.lineJoin="round";c.stroke();
+ pts.forEach((p,i)=>{if(keys.length<26||i%Math.ceil(keys.length/12)===0||i===keys.length-1){c.beginPath();c.arc(p.x,p.y,3,0,Math.PI*2);c.fillStyle="#ffd5ed";c.fill();c.textAlign="center";c.textBaseline="top";c.fillStyle="#94869e";c.fillText(monthFmt.format(new Date(p.k+"-15T12:00:00")),p.x,h-pad.b+10)}});
+ $("dateRange").textContent=keys.length?`${monthFmt.format(new Date(keys[0]+"-15T12:00:00"))} — ${monthFmt.format(new Date(keys[keys.length-1]+"-15T12:00:00"))}`:"No dates";
+}
+function drawAge(rows){
+ const {c,w,h}=setCanvas($("ageChart"));c.clearRect(0,0,w,h);
+ const order=["18-24","25-34","35-44","45-54","55+"],counts=order.map(k=>rows.reduce((n,r)=>n+(bucket(r[2])===k),0)),total=rows.length;
+ const cx=w/2,cy=h/2,r=Math.min(w,h)*.42,inner=r*.68;let angle=-Math.PI/2;
+ if(!total){c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.strokeStyle="#ffffff18";c.lineWidth=r-inner;c.stroke()}
+ else counts.forEach((n,i)=>{if(!n)return;const next=angle+n/total*Math.PI*2;c.beginPath();c.arc(cx,cy,r,angle,next);c.strokeStyle=COLORS[i];c.lineWidth=r-inner;c.lineCap="butt";c.stroke();angle=next});
+ $("donutTotal").textContent=fmt.format(total);
+ $("ageLegend").innerHTML=order.map((k,i)=>`<div class="legend-row"><i class="legend-dot" style="background:${COLORS[i]}"></i><span>${k} years</span><b>${total?Math.round(counts[i]/total*100):0}%</b></div>`).join("");
+}
+function renderInsights(rows){
+ const byYear=new Map();rows.forEach(r=>byYear.set(r[3].slice(0,4),(byYear.get(r[3].slice(0,4))||0)+1));
+ const leader=[...byYear].sort((a,b)=>b[1]-a[1])[0];
+ const newest=rows.reduce((a,r)=>r[3]>a?r[3]:a,""),youngest=rows.reduce((a,r)=>r[2]<a[0]?r:a,[Infinity,"",""]);
+ const oldest=rows.reduce((a,r)=>r[2]>a[0]?r:a,[0,"",""]);
+ const items=[
+  ["✦","Biggest join year",leader?`${leader[0]} led with ${fmt.format(leader[1])} profiles.`:"No profiles in this selection."],
+  ["↗","Freshest profile",newest?`The latest join date is ${fullDate.format(new Date(newest+"T12:00:00"))}.`:"No date available."],
+  ["◉","Age span",rows.length?`${youngest[2]} to ${oldest[2]} years across the current selection.`:"No ages available."]
+ ];
+ $("insights").innerHTML=items.map(x=>`<div class="insight"><div class="insight-icon">${x[0]}</div><div><strong>${x[1]}</strong><span>${x[2]}</span></div></div>`).join("");
+}
+function renderTable(rows){
+ const sorted=rows.slice().sort((a,b)=>b[3].localeCompare(a[3])).slice(0,12);
+ $("userRows").innerHTML=sorted.map(r=>`<tr><td><div class="user-cell"><span class="avatar">${r[1].split(/\s+/).map(w=>w[0]||"").slice(0,2).join("").toUpperCase()}</span>${escapeHtml(r[1])}</div></td><td class="id">${escapeHtml(r[0])}</td><td><span class="age-pill">${r[2]}</span></td><td>${fullDate.format(new Date(r[3]+"T12:00:00"))}</td></tr>`).join("");
+ $("empty").hidden=sorted.length>0;$("tableCount").textContent=`${fmt.format(sorted.length)} shown`;$("tableSub").textContent=`Most recently joined profiles in this view · ${fmt.format(rows.length)} matching`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function render(){
+ const y=$("yearFilter").value,a=$("ageFilter").value,q=$("search").value.trim().toLowerCase();
+ filtered=ROWS.filter(r=>(y==="all"||r[3].startsWith(y))&&(a==="all"||bucket(r[2])===a)&&(!q||r[0].toLowerCase().includes(q)||r[1].toLowerCase().includes(q)));
+ $("kpiTotal").textContent=fmt.format(filtered.length);$("kpiTotalFoot").textContent=`of ${fmt.format(ROWS.length)} total profiles`;
+ const ages=filtered.map(r=>r[2]).sort((x,z)=>x-z),avg=ages.length?ages.reduce((s,n)=>s+n,0)/ages.length:0,med=ages.length?ages[Math.floor((ages.length-1)/2)]:0;
+ $("kpiAvg").textContent=ages.length?avg.toFixed(1):"—";$("kpiMedian").textContent=ages.length?String(med):"—";
+ const latest=filtered.reduce((d,r)=>r[3]>d?r[3]:d,"");$("kpiLatest").textContent=latest?new Intl.DateTimeFormat("en-IN",{month:"short",year:"numeric"}).format(new Date(latest+"T12:00:00")):"—";
+ $("kpiLatestFoot").textContent=latest?fullDate.format(new Date(latest+"T12:00:00")):"No matching profiles";
+ drawTrend(filtered);drawAge(filtered);renderInsights(filtered);renderTable(filtered);
+}
+["yearFilter","ageFilter"].forEach(id=>$(id).addEventListener("change",render));$("search").addEventListener("input",render);
+$("reset").addEventListener("click",()=>{$("yearFilter").value="all";$("ageFilter").value="all";$("search").value="";render()});
+$("export").addEventListener("click",()=>{const csv=[["User_ID","Name","Age","Join_Date"],...filtered.map(r=>r.map(String))].map(row=>row.map(v=>`"${v.replace(/"/g,'""')}"`).join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="phonepe-filtered-profiles.csv";a.click();URL.revokeObjectURL(url)});
+$("trendChart").addEventListener("mousemove",e=>{const canvas=e.currentTarget,rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left,padL=34,padR=12,step=(rect.width-padL-padR)/Math.max(1,chartPoints.length),i=Math.max(0,Math.min(chartPoints.length-1,Math.floor((x-padL)/step)));if(!chartPoints.length)return;const pointX=padL+i*step+step/2,tip=$("chartTooltip"),key=[...new Set(filtered.map(r=>r[3].slice(0,7)))].sort()[i];tip.style.display="block";tip.style.left=Math.min(rect.width-125,Math.max(4,pointX+8))+"px";tip.style.top="10px";tip.textContent=`${monthFmt.format(new Date(key+"-15T12:00:00"))} · ${fmt.format(chartPoints[i])} joins`});
+$("trendChart").addEventListener("mouseleave",()=>$("chartTooltip").style.display="none");
+window.addEventListener("resize",()=>{drawTrend(filtered);drawAge(filtered)});
+render();
+</script>
+</body>
+</html>
